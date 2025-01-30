@@ -21,6 +21,10 @@ body::before {
     background: rgba(0, 0, 0, 0.5); /* Dark overlay for readability */
     z-index: -1;
 }
+img{
+    width: 200px;
+    height: 300px;
+}
 
 /* Header styling */
 header {
