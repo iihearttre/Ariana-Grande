@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tres</title>
-    <link rel="stylesheet" href="style.css"> <!-- Linking external CSS -->
+    <title>Tre's Playground</title>
+    <link rel="stylesheet" href="style.css"> 
 </head>
 <body>
     <header>
-        <h1>Welcome to Tre's play ground</h1>
+        <h1>Welcome to Tre's Playground</h1>
         <nav>
             <ul>
                 <li><a href="about.html">About</a></li>
@@ -18,25 +18,29 @@
     </header>
 
     <main>
-        <img src="wicked.jpg" alt="This is a picture of one a famouse franchise movies called the remake.">
-        <div class="interactive">
-            <h2>Interactive With Me</h2>
-            <p>Click the link below</p>
-            <a href="https://us.shein.com/?ref=www&rep=dir&ret=usshein">Visit Shein</a>
+        <div class="calculator">
+            <h2>Math Calculation</h2>
+            <button onclick="calculateSum()">Click to Calculate</button>
+            <p id="result"></p>
         </div>
 
-        <div class="clothes">
-            <h2>Clothes</h2>
-            <ul>
-                <li>Pants</li>
-                <li>Shirts</li>
-                <li>Shorts</li>
-            </ul>
+        <div class="exam-status">
+            <h2>Exam Status</h2>
+            <button onclick="checkPassStatus()">Check Pass Status</button>
+            <p id="status"></p>
+        </div>
+
+        <div class="performance">
+            <h2>Performance Evaluation</h2>
+            <button onclick="evaluatePerformance()">Evaluate Performance</button>
+            <p id="performance"></p>
         </div>
     </main>
 
     <footer>
-        <p>&copy; 2025 Tres House. All rights reserved.</p>
+        <p>&copy; 2025 Tre's House. All rights reserved.</p>
     </footer>
+
+    <script src="script.js"></script> <!-- Link to JavaScript file -->
 </body>
 </html>
