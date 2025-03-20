@@ -53,7 +53,6 @@ const shop = {
 // Display products dynamically
 document.addEventListener("DOMContentLoaded", function() {
     const productList = document.getElementById("products");
-
     shop.products.forEach(product => {
         const div = document.createElement("div");
         div.classList.add("product-card");

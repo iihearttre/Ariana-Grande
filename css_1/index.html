@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tres</title>
-    <link rel="stylesheet" href="style.css"> <!-- Linking external CSS -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
@@ -18,24 +18,36 @@
     </header>
 
     <main>
+        <section class="hero">
+            <img src="image1.jpg" alt="Tres House Hero" class="hero-image">
+            <div class="hero-text">
+                <h2>Discover Magical Fashion</h2>
+                <p>Explore our enchanting collection of clothes and accessories.</p>
+                <a href="#products" class="cta-button">Shop Now</a>
+            </div>
+        </section>
+
         <div class="interactive">
             <h2>Interactive With Me</h2>
             <p>Click the link below</p>
             <a href="https://us.shein.com/?ref=www&rep=dir&ret=usshein">Visit Shein</a>
         </div>
 
-        <div class="clothes">
-            <h2>Clothes</h2>
-            <ul>
-                <li>Pants</li>
-                <li>Shirts</li>
-                <li>Shorts</li>
-            </ul>
+        <div class="clothes" id="products">
+            <h2>Our Products</h2>
+            <div id="products" class="product-list"></div>
+            <div id="cart">
+                <h3>Your Cart</h3>
+                <ul id="cart-items"></ul>
+                <p>Total: <span id="cart-total">$0.00</span></p>
+                <button id="checkout-btn">Checkout</button>
+            </div>
         </div>
     </main>
 
     <footer>
         <p>&copy; 2025 Tres House. All rights reserved.</p>
     </footer>
+    <script src="shop.js"></script>
 </body>
 </html>

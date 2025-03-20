@@ -3,44 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tre's Playground</title>
+    <title>Products - Tre's Playground</title>
     <link rel="stylesheet" href="style.css"> 
 </head>
 <body>
     <header>
-        <h1>Welcome to Tre's Playground</h1>
+        <h1>Shop Our Collection</h1>
         <nav>
             <ul>
-                <li><a href="about.html">About</a></li>
-                <li><a href="contact.html">Contact</a></li>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="cart.html">Shopping Cart</a></li>
             </ul>
         </nav>
     </header>
-
+    
     <main>
-        <div class="calculator">
-            <h2>Math Calculation</h2>
-            <button onclick="calculateSum()">Click to Calculate</button>
-            <p id="result"></p>
-        </div>
-
-        <div class="exam-status">
-            <h2>Exam Status</h2>
-            <button onclick="checkPassStatus()">Check Pass Status</button>
-            <p id="status"></p>
-        </div>
-
-        <div class="performance">
-            <h2>Performance Evaluation</h2>
-            <button onclick="evaluatePerformance()">Evaluate Performance</button>
-            <p id="performance"></p>
-        </div>
+        <section id="products">
+            <div class="product-card">
+                <img src="jeans.jpg" alt="Jeans">
+                <h3>Classic Blue Jeans</h3>
+                <p>$49.99</p>
+                <p>Sizes: S, M, L, XL</p>
+                <button>Add to Cart</button>
+            </div>
+            
+            <div class="product-card">
+                <img src="shirt.jpg" alt="Shirt">
+                <h3>Casual T-Shirt</h3>
+                <p>$19.99</p>
+                <p>Sizes: S, M, L, XL</p>
+                <button>Add to Cart</button>
+            </div>
+            
+            <div class="product-card">
+                <img src="sweatpants.jpg" alt="Sweatpants">
+                <h3>Comfortable Sweatpants</h3>
+                <p>$39.99</p>
+                <p>Sizes: S, M, L, XL</p>
+                <button>Add to Cart</button>
+            </div>
+        </section>
     </main>
-
+    
     <footer>
         <p>&copy; 2025 Tre's House. All rights reserved.</p>
     </footer>
-
-    <script src="script.js"></script> <!-- Link to JavaScript file -->
-</body>
-</html>
+    
+    <script src="script.js"></script>
+ 
