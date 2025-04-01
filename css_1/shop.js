@@ -1,10 +1,10 @@
 const shop = {
     username: "truelovescats",
     products: [
-        { id: 1, name: "T-Shirt", price: 19.99, image: "tshirt.jpg" },
-        { id: 2, name: "Hoodie", price: 39.99, image: "hoodie.jpg" },
-        { id: 3, name: "Jeans", price: 49.99, image: "jeans.jpg" },
-        { id: 4, name: "Sweatpants", price: 29.99, image: "sweatpants.jpg" }
+        { id: 1, name: "star corset", price: 10.00, image: "starcorset.jpg" },
+        { id: 2, name: " heart Hoodie", price: 15.54, image: "hoodie.jpg" },
+        { id: 3, name: "flare Jeans", price: 19.99, image: "jeans.jpg" },
+        { id: 4, name: "oversized Sweatpants", price: 17.89, image: "" }
     ],
     cart: [],
 

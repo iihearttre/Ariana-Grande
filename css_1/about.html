@@ -29,8 +29,32 @@
         </div>
     </main>
 
+    <!-- Music Player Section -->
+    <div class="music-player">
+        <button onclick="toggleMusic()">🎵 Play Music</button>
+        <audio id="bg-music" next>
+            <source src="pink-xoxo.mp3" type="audio/mpeg">
+            <source src="june-gloom.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+    </div>
+
     <footer>
         <p>&copy; 2025 Tres House. All rights reserved.</p>
     </footer>
+
+    <script>
+        let isPlaying = false;
+        const music = document.getElementById('bg-music');
+
+        function toggleMusic() {
+            if (isPlaying) {
+                music.pause();
+            } else {
+                music.play();
+            }
+            isPlaying = !isPlaying;
+        }
+    </script>
 </body>
 </html>
