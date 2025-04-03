@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tres House</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Animation for moving images */
+        .move-image {
+            animation: moveAround 5s infinite alternate;
+        }
+
+        @keyframes moveAround {
+            0% { transform: translate(0, 0); }
+            50% { transform: translate(100px, 100px); }
+            100% { transform: translate(-100px, -100px); }
+        }
+
+        /* Cart Modal Styles */
+        .cart-modal-body {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">Tres House</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="mens.html">Men's</a></li>
+                    <li class="nav-item"><a class="nav-link" href="womens.html">Women's</a></li>
+                    <li class="nav-item"><a class="nav-link" href="kids.html">Kids</a></li>
+                    <li class="nav-item"><a class="nav-link" href="summer.html">Summer Collection</a></li>
+                    <li class="nav-item"><a class="nav-link" href="hotdeals.html">Hot Deals</a></li>
+                    <li class="nav-item"><a class="nav-link" href="winter.html">Winter Collection</a></li>
+                    <li class="nav-item"><a class="nav-link" href="checkout.html">Checkout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mt-4">
+        <section class="hero text-center">
+            <h2>Search Products</h2>
+            <input type="text" id="searchBox" class="form-control" placeholder="Search products..." onkeyup="searchProducts()">
+        </section>
+
+        <div class="row mt-5" id="products">
+            <h2 class="text-center mb-4">Our Products</h2>
+            <!-- Product Display (Dynamic) -->
+        </div>
+
+        <div class="text-center mt-5">
+            <h3>Enjoy Some Music</h3>
+            <button class="btn btn-primary" onclick="toggleMusic()">🎵 Play/Pause</button>
+            <button class="btn btn-danger" onclick="skipSong()">⏭ Skip</button>
+            <audio id="bg-music" loop></audio>
+        </div>
+    </main>
+
+    <footer class="bg-dark text-white text-center p-3 mt-4">
+        <p>&copy; 2025 Tres House. All rights reserved.</p>
+    </footer>
+
+    <!-- Cart Modal -->
+    <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="cartModalLabel">Your Shopping Cart</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body cart-modal-body">
+                    <ul id="cart-items">
+                        <li>Your cart is empty.</li>
+                    </ul>
+                    <p>Total: $<span id="cart-total">0.00</span></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="checkout()">Checkout</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let isPlaying = false;
+        let currentSongIndex = 0;
+        const music = document.getElementById('bg-music');
+        let cart = [];
+
+        const songs = [
+            "pink-xoxo.mp3",
+            "june-gloom.mp3",
+            "supernatural-Lyric.mp3",
+            "ms-whitman.mp3",
+            "defying-gravity-from-wicked-the-soundtrack.mp3",
+            "agorahills.mp3",
+            "iluvit.mp3"
+        ];
+
+        function toggleMusic() {
+            if (isPlaying) {
+                music.pause();
+            } else {
+                music.play();
+            }
+            isPlaying = !isPlaying;
+        }
+
+        function skipSong() {
+            currentSongIndex = (currentSongIndex + 1) % songs.length;
+            music.src = songs[currentSongIndex];
+            music.play();
+            isPlaying = true;
+        }
+
+        music.src = songs[currentSongIndex];
+
+        // Sample products data
+        const products = [
+            { id: 1, name: "star corset", price: 10.00, image: "starcorset.jpg" },
+            { id: 2, name: "heart Hoodie", price: 15.54, image: "hoodie.jpg" },
+            { id: 3, name: "flare Jeans", price: 19.99, image: "jeans.jpg" },
+            { id: 4, name: "oversized Sweatpants", price: 17.89, image: "sweatpants.jpg" },
+        ];
+
+        // Display products dynamically
+        document.addEventListener("DOMContentLoaded", function() {
+            const productList = document.getElementById("products");
+            products.forEach(product => {
+                const div = document.createElement("div");
+                div.classList.add("col-md-4");
+                div.innerHTML = `
+                    <div class="card">
+                        <img src="${product.image}" class="card-img-top move-image" alt="${product.name}">
+                        <div class="card-body">
+                            <h5 class="card-title">${product.name}</h5>
+                            <p class="card-text">$${product.price.toFixed(2)}</p>
+                            <button class="btn btn-success" onclick="addToCart(${product.id}, '${product.name}', ${product.price})">Add to Cart</button>
+                        </div>
+                    </div>
+                `;
+                productList.appendChild(div);
+            });
+        });
+
+        // Add product to cart
+        function addToCart(productId, productName, price) {
+            const product = { id: productId, name: productName, price: price };
+            cart.push(product);
+            updateCartUI();
+        }
+
+        // Update the cart UI
+        function updateCartUI() {
+            const cartList = document.getElementById("cart-items");
+            const totalPrice = document.getElementById("cart-total");
+            cartList.innerHTML = "";
+            let total = 0;
+
+            if (cart.length === 0) {
+                cartList.innerHTML = "<li>Your cart is empty.</li>";
+                totalPrice.textContent = "0.00";
+                return;
+            }
+
+            cart.forEach(item => {
+                const li = document.createElement("li");
+                li.innerHTML = `${item.name} - $${item.price.toFixed(2)}`;
+                cartList.appendChild(li);
+                total += item.price;
+            });
+
+            totalPrice.textContent = total.toFixed(2);
+        }
+
+        // Open the cart modal
+        function openCart() {
+            const cartModal = new bootstrap.Modal(document.getElementById('cartModal'));
+            cartModal.show();
+        }
+
+        // Handle checkout (for now, just clear the cart)
+        function checkout() {
+            alert("Thank you for shopping with us!");
+            cart = [];
+            updateCartUI();
+            const cartModal = new bootstrap.Modal(document.getElementById('cartModal'));
+            cartModal.hide();
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
