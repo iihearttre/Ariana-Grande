@@ -3,10 +3,8 @@ const shop = {
     products: [
         { id: 1, name: "star corset", price: 10.00, image: "starcorset.jpg" },
         { id: 2, name: "heart Hoodie", price: 15.54, image: "hoodie.jpg" },
-        { id: 3, name: "flare Jeans", price: 19.99, image: "flare.jpg" },
-        {id: 4, name: "oversized Sweatpants", price: 17.89, image: "sweat.jpg" },
-        
-
+        { id: 3, name: "flare Jeans", price: 19.99, image: "jeans.jpg" },
+        { id: 4, name: "oversized Sweatpants", price: 17.89, image: "sweatpants.jpg" },
     ],
     cart: [],
 
