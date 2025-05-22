@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>About Us</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="content">
+            <h2>Welcome to Tres House</h2>
+            <p>We are a passionate team dedicated to bringing you the best online experience. Our goal is to create a welcoming space for all visitors.</p>
+            <p>At Tres House, we focus on providing quality content and interactive experiences.</p>
+            <section class="team">
+                <h3>Our Team</h3>
+                <p>Meet the creators behind Tres House: [Add team names or descriptions here].</p>
+            </section>
+        </div>
+    </main>
+
+    <!-- Music Player Section -->
+    <div class="music-player">
+        <button onclick="toggleMusic()">🎵 Play Music</button>
+        <audio id="bg-music" next>
+            <source src="pink-xoxo.mp3" type="audio/mpeg">
+            <source src="june-gloom.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Tres House. All rights reserved.</p>
+    </footer>
+
+    <script>
+        let isPlaying = false;
+        const music = document.getElementById('bg-music');
+
+        function toggleMusic() {
+            if (isPlaying) {
+                music.pause();
+            } else {
+                music.play();
+            }
+            isPlaying = !isPlaying;
+        }
+    </script>
+</body>
+</html>
