@@ -3,7 +3,7 @@ S<!DOCTYPE html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tres House</title>
+    <title>la maison de couture</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
@@ -107,7 +107,7 @@ S<!DOCTYPE html>
             <h3>Enjoy Some Music</h3>
             <button class="btn btn-primary" onclick="toggleMusic()">🎵 Play/Pause</button>
             <button class="btn btn-danger" onclick="skipSong()">⏭ Skip</button>
-            <audio id="bg-music" loop></audio>
+            <audio id="bg-music" next></audio>
         </div>
     </main>
 
@@ -194,10 +194,21 @@ S<!DOCTYPE html>
         music.src = songs[currentSongIndex];
 
         const products = [
-            { id: 1, name: "star corset", price: 10.00, image: "starcorset.jpg" },
-            { id: 2, name: "heart Hoodie", price: 15.54, image: "hoodie.jpg" },
-            {id: 3, name: "spidey jeans", price: 18.00, image: "spidey jeans.jpg"},
-            {id: 4, name:"blingged out skirt", price: 23.53, image: "bejewled.jpg"},
+        { id: 1, name: "star corset", price: 10.00, image: "starcorset.jpg" },
+            
+            { id: 3, name: "retro skirt", price: 19.99, image: "retro.jpg" },
+            { id: 4, name: "bathingsuit", price: 17.89, image: "bathingsuits.jpg" }, 
+            { id: 5, name: "miss me jeans", price: 15.54, image: "miss me.jpg" },
+            {id: 6, name: "spidey jeans", price: 18.00, image: "spidey jeans.jpg"},
+            {id: 7, name:"bejweled", price: 23.53, image: "bejewled.jpg"},
+            { id: 8, name: "swim suit", price: 15.54, image: "girl.jpg" },
+            { id: 9, name: "flare Jeans", price: 19.99, image: "flare.jpg" },
+            { id: 10, name: "3 piece set", price: 17.89, image: "cozy.jpg" }, 
+            { id: 11, name: "cute dres", price: 15.54, image: "cute.jpg" },
+            
+            {id: 13, name:"floral dress", price: 23.53, image: "nice.jpg"},
+            { id: 2, name: "harajuku miss me jeans", price: 20.00, image: "harajuku.jpg" },
+        { id: 3, name: "swimming dress", price: 15.00, image: "swim.jpg" },
             
         ];
 
@@ -239,7 +250,7 @@ S<!DOCTYPE html>
             let total = 0;
 
             if (cart.length === 0) {
-                cartList.innerHTML = "<li>Your cart is empty.</li>";
+                cartList.innerHTML = "<li>Your cart is heeavy keep going friend.</li>";
                 totalPrice.textContent = "0.00";
                 cartCount.textContent = "0";
                 return;

@@ -1,350 +1,298 @@
-<!DOCTYPE html>
+S<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Tres House</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage.js"></script>
-  <style>
-    .move-image {
-      animation: moveAround 5s infinite alternate;
-    }
-    @keyframes moveAround {
-      0% { transform: translate(0, 0); }
-      50% { transform: translate(100px, 100px); }
-      100% { transform: translate(-100px, -100px); }
-    }
-    #playlist li {
-      cursor: pointer;
-    }
-    #playlist li.active {
-      font-weight: bold;
-      color: #0d6efd; /* bootstrap primary */
-    }
-    #lyrics {
-      white-space: pre-wrap;
-      margin-top: 15px;
-      background: #f8f9fa;
-      padding: 10px;
-      border-radius: 5px;
-      height: 150px;
-      overflow-y: auto;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>la maison de couture</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <style>
+        .move-image {
+            animation: moveAround 5s infinite alternate;
+        }
+
+        @keyframes moveAround {
+            0% { transform: translate(0, 0); }
+            50% { transform: translate(100px, 100px); }
+            100% { transform: translate(-100px, -100px); }
+        }
+
+        .cart-modal-body {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .hero {
+            background-image: url('your-hero.jpg');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            color: white;
+            padding: 100px 20px;
+        }
+
+        .hero::before {
+            content: "";
+            background: rgba(0, 0, 0, 0.6);
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 0;
+        }
+
+        .hero > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h2 {
+            font-size: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            .hero h2 {
+                font-size: 2rem;
+            }
+        }
+    </style>
 </head>
 <body>
-  <!-- Welcome Screen -->
-  <div class="welcome-screen">✨ Welcome to Tres House ✨</div>
-
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container">
-      <a class="navbar-brand" href="#">Tres House</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-          <li class="nav-item"><a class="nav-link" href="mens.html">Men's</a></li>
-          <li class="nav-item"><a class="nav-link" href="womens.html">Women's</a></li>
-          <li class="nav-item"><a class="nav-link" href="kids.html">Kids</a></li>
-          <li class="nav-item"><a class="nav-link" href="summer.html">Summer Collection</a></li>
-          <li class="nav-item"><a class="nav-link" href="hotdeals.html">Hot Deals</a></li>
-          <li class="nav-item"><a class="nav-link" href="winter.html">Winter Collection</a></li>
-          <li class="nav-item"><a class="nav-link" href="checkout.html">Checkout</a></li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-
-  <!-- Main Content -->
-  <main class="container mt-4">
-    <section class="hero text-center" data-aos="fade-up">
-      <h2>Search Products</h2>
-      <input type="text" id="searchBox" class="form-control" placeholder="Search products..." onkeyup="searchProducts()" />
-    </section>
-
-    <div class="text-center my-4" id="loading">
-      <div class="spinner-border text-primary" role="status">
-        <span class="visually-hidden">Loading...</span>
-      </div>
-    </div>
-
-    <div class="row mt-5" id="products">
-      <h2 class="text-center mb-4">Our Products</h2>
-    </div>
-
-    <!-- Size Chart Modal Button -->
-    <div class="text-center">
-      <button class="btn btn-outline-info mb-4" data-bs-toggle="modal" data-bs-target="#sizeChartModal">View Size Chart</button>
-    </div>
-
-    <!-- Size Chart Modal -->
-    <div class="modal fade" id="sizeChartModal" tabindex="-1" aria-labelledby="sizeChartModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="sizeChartModalLabel">Size Chart (XS - 7X)</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <table class="table table-bordered text-center">
-              <thead class="table-dark">
-                <tr><th>Size</th><th>Chest (in)</th><th>Waist (in)</th><th>Hip (in)</th></tr>
-              </thead>
-              <tbody>
-                <tr><td>XS</td><td>30-32</td><td>24-26</td><td>32-34</td></tr>
-                <tr><td>S</td><td>34-36</td><td>28-30</td><td>36-38</td></tr>
-                <tr><td>M</td><td>38-40</td><td>32-34</td><td>40-42</td></tr>
-                <tr><td>L</td><td>42-44</td><td>36-38</td><td>44-46</td></tr>
-                <tr><td>XL</td><td>46-48</td><td>40-42</td><td>48-50</td></tr>
-                <tr><td>2X</td><td>50-52</td><td>44-46</td><td>52-54</td></tr>
-                <tr><td>3X</td><td>54-56</td><td>48-50</td><td>56-58</td></tr>
-                <tr><td>4X</td><td>58-60</td><td>52-54</td><td>60-62</td></tr>
-                <tr><td>5X</td><td>62-64</td><td>56-58</td><td>64-66</td></tr>
-                <tr><td>6X</td><td>66-68</td><td>60-62</td><td>68-70</td></tr>
-                <tr><td>7X</td><td>70-72</td><td>64-66</td><td>72-74</td></tr>
-              </tbody>
-            </table>
-          </div>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">Tres House</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="mens.html">Men's</a></li>
+                    <li class="nav-item"><a class="nav-link" href="womens.html">Women's</a></li>
+                    <li class="nav-item"><a class="nav-link" href="kids.html">Kids</a></li>
+                    <li class="nav-item"><a class="nav-link" href="summer.html">Summer Collection</a></li>
+                    <li class="nav-item"><a class="nav-link" href="hotdeals.html">Hot Deals</a></li>
+                    <li class="nav-item"><a class="nav-link" href="winter.html">Winter Collection</a></li>
+                    <li class="nav-item"><a class="nav-link" href="checkout.html">Checkout</a></li>
+                </ul>
+            </div>
         </div>
-      </div>
+    </nav>
+
+    <main class="container mt-4">
+        <section class="hero text-center" data-aos="fade-up">
+            <h2>Search Products</h2>
+            <input type="text" id="searchBox" class="form-control" placeholder="Search products..." onkeyup="searchProducts()">
+        </section>
+
+        <div class="text-center my-4" id="loading">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+
+        <div class="row mt-5" id="products">
+            <h2 class="text-center mb-4">Our Products</h2>
+        </div>
+
+        <section class="text-center my-5" data-aos="fade-up">
+            <h3>What Our Customers Say</h3>
+            <blockquote class="blockquote">
+                <p>“Tres House is the only place I shop now. Quality is top tier!”</p>
+                <footer class="blockquote-footer">Alyssa from L.A.</footer>
+            </blockquote>
+        </section>
+
+        <div class="text-center mt-5">
+            <h3>Enjoy Some Music</h3>
+            <button class="btn btn-primary" onclick="toggleMusic()">🎵 Play/Pause</button>
+            <button class="btn btn-danger" onclick="skipSong()">⏭ Skip</button>
+            <audio id="bg-music" loop></audio>
+        </div>
+    </main>
+
+    <footer class="bg-dark text-white text-center p-3 mt-4">
+        <p>&copy; 2025 Tres House. All rights reserved.</p>
+    </footer>
+
+    <button onclick="openCart()" class="btn btn-warning position-fixed bottom-0 end-0 m-4 shadow-lg">
+        🛒 <span id="cart-count" class="badge bg-danger">0</span>
+    </button>
+
+    <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="cartModalLabel">Your Shopping Cart</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body cart-modal-body">
+                    <ul id="cart-items">
+                        <li>Your cart is empty.</li>
+                    </ul>
+                    <p>Total: $<span id="cart-total">0.00</span></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="checkout()">Checkout</button>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- Music Player Section -->
-    <section class="mt-5">
-      <h3 class="text-center">Enjoy Some Music</h3>
+    <script>
+        let isPlaying = false;
+        let currentSongIndex = 0;
+        const music = document.getElementById('bg-music');
+        let cart = [];
 
-      <div class="text-center mb-3">
-        <strong>Now Playing:</strong> <span id="currentSongTitle">-</span>
-      </div>
+        const songs = [
+            "pink-xoxo.mp3",
+            "june-gloom.mp3",
+            "supernatural-Lyric.mp3",
+            "ms-whitman.mp3",
+            "defying-gravity-from-wicked-the-soundtrack.mp3",
+            "agorahills.mp3",
+            "iluvit.mp3",
+            "runaway.mp3" ,
+            "one of your girls.mp3",
+            "one of the girls.mp3",
+            "taste.mp3",
+            "open arms.mp3",
+            "ari.mp3",
+            "chihiro.mp3",
+            "viva.mp3",
+            "anthem.mp3",
+            "tre.mp3",
+            "reflect.mp3",
+            "bloody.mp3",
+            "casual.mp3",
+            "busy.mp3",
+            "judas.mp3",
+            "sippycup.mp3",
+            "pepsi.mp3"
 
-      <div class="text-center mb-3">
-        <audio id="bg-music" controls></audio>
-      </div>
 
-      <div class="text-center mb-3">
-        <button class="btn btn-primary me-2" onclick="togglePlayPause()">Play/Pause</button>
-        <button class="btn btn-danger me-2" onclick="skipSong()">Skip</button>
-        <button class="btn btn-secondary me-2" onclick="toggleLoop()">
-          Loop: <span id="loopStatus">Off</span>
-        </button>
-      </div>
+        ];
 
-      <h4>Playlist</h4>
-      <ul id="playlist" class="list-group mb-3"></ul>
+        function toggleMusic() {
+            if (isPlaying) {
+                music.pause();
+            } else {
+                music.play();
+            }
+            isPlaying = !isPlaying;
+        }
 
-      <h4>Lyrics</h4>
-      <div id="lyrics">Select a song to see lyrics here.</div>
-    </section>
+        function skipSong() {
+            currentSongIndex = (currentSongIndex + 1) % songs.length;
+            music.src = songs[currentSongIndex];
+            music.play();
+            isPlaying = true;
+        }
 
-    <!-- Auth & Feedback Section -->
-    <div class="mt-5">
-      <h1 class="text-center mb-4">Tres House</h1>
-      <div class="mb-3">
-        <input type="email" id="email" class="form-control" placeholder="Email" />
-        <input type="password" id="password" class="form-control mt-2" placeholder="Password" />
-        <button class="btn btn-primary mt-2" onclick="signUp()">Sign Up</button>
-        <button class="btn btn-success mt-2" onclick="login()">Login</button>
-        <button class="btn btn-danger mt-2" onclick="logout()">Logout</button>
-      </div>
+        music.src = songs[currentSongIndex];
 
-      <h4 class="mt-5">Submit Feedback</h4>
-      <textarea id="feedback" class="form-control" placeholder="Write something..."></textarea>
-      <button class="btn btn-warning mt-2" onclick="submitFeedback()">Submit</button>
+        const products = [
+        
+            
+            { id: 3, name: "casual fit", price: 19.99, image: "casual.jpg" },
+            { id: 4, name: "graffiti jeans", price: 17.89, image: "graffiti.jpg" }, 
+            { id: 5, name: "nice grey suit", price: 15.54, image: "grey.jpg" },
+            {id: 6, name: "spidey jeans", price: 18.00, image: "spidey jeans.jpg"},
+            {id: 7, name:"swim trunks", price: 23.53, image: "nicey.jpg"},
+            { id: 8, name: "blue feather shorts", price: 15.54, image: "columbia.jpg" },
+            { id: 9, name: "flare Jeans", price: 19.99, image: "flare.jpg" },
+            { id: 10, name: "mot my ex", price: 17.89, image: "not ex.jpg" }, 
+            { id: 11, name: "nice shorts", price: 15.54, image: "shorts.jpg" },
+            
+            {id: 13, name:"graphic shirt", price: 23.53, image: "shirt.jpg"},
+            { id: 2, name: "graphic tee", price: 20.00, image: "shhh.jpg" },
+        { id: 3, name: "tres carhart jeans", price: 15.00, image: "tre's jeans.jpg" },
+            
+        ];
 
-      <div class="mt-5">
-        <h5>Upload Media</h5>
-        <input type="file" id="fileInput" />
-        <button class="btn btn-info mt-2" onclick="uploadFile()">Upload</button>
-      </div>
+        document.addEventListener("DOMContentLoaded", function() {
+            const productList = document.getElementById("products");
+            const loader = document.getElementById("loading");
 
-      <div class="mt-5">
-        <h5>Read Feedback</h5>
-        <ul id="feedbackList" class="list-group"></ul>
-      </div>
-    </div>
-  </main>
+            setTimeout(() => {
+                loader.style.display = "none";
+                products.forEach(product => {
+                    const div = document.createElement("div");
+                    div.classList.add("col-md-4");
+                    div.innerHTML = `
+                        <div class="card">
+                            <img src="${product.image}" class="card-img-top move-image" alt="${product.name}">
+                            <div class="card-body">
+                                <h5 class="card-title">${product.name}</h5>
+                                <p class="card-text">$${product.price.toFixed(2)}</p>
+                                <button class="btn btn-success" onclick="addToCart(${product.id}, '${product.name}', ${product.price})">Add to Cart</button>
+                            </div>
+                        </div>
+                    `;
+                    productList.appendChild(div);
+                });
+            }, 1000);
+        });
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
-  <script>AOS.init();</script>
+        function addToCart(productId, productName, price) {
+            const product = { id: productId, name: productName, price: price };
+            cart.push(product);
+            updateCartUI();
+        }
 
-  <script>
-    // Firebase Config - Replace with your actual config
-    const firebaseConfig = {
-      apiKey: "YOUR_API_KEY",
-      authDomain: "YOUR_AUTH_DOMAIN",
-      projectId: "YOUR_PROJECT_ID",
-      storageBucket: "YOUR_STORAGE_BUCKET",
-      messagingSenderId: "YOUR_MSG_SENDER_ID",
-      appId: "YOUR_APP_ID"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const db = firebase.firestore();
-    const storage = firebase.storage();
+        function updateCartUI() {
+            const cartList = document.getElementById("cart-items");
+            const totalPrice = document.getElementById("cart-total");
+            const cartCount = document.getElementById("cart-count");
+            cartList.innerHTML = "";
+            let total = 0;
 
-    // Songs and lyrics
-    const songs = [
-      "pink-xoxo.mp3",
-      "june-gloom.mp3",
-      "supernatural-Lyric.mp3",
-      "ms-whitman.mp3",
-      "defying-gravity-from-wicked-the-soundtrack.mp3",
-      "agorahills.mp3",
-      "iluvit.mp3",
-      "runaway.mp3",
-      "one of your girls.mp3",
-      "one of the girls.mp3",
-      "taste.mp3",
-      "open arms.mp3",
-      "ari.mp3",
-      "chihiro.mp3",
-      "viva.mp3",
-      "anthem.mp3",
-      "tre.mp3",
-      "reflect.mp3",
-      "bloody.mp3",
-      "casual.mp3",
-      "busy.mp3",
-      "judas.mp3",
-            "sippy.mp3"
-    ];
+            if (cart.length === 0) {
+                cartList.innerHTML = "<li>Your cart is empty.</li>";
+                totalPrice.textContent = "0.00";
+                cartCount.textContent = "0";
+                return;
+            }
 
-    // Replace with your actual lyrics
-    const lyricsData = {
-      "pink-xoxo.mp3": "Lyrics for Pink XOXO...\nLine 2...\nLine 3...",
-      "june-gloom.mp3": "Lyrics for June Gloom...\nLine 2...\nLine 3...",
-      "supernatural-Lyric.mp3": "Lyrics for Supernatural...\nLine 2...\nLine 3...",
-      // Add more lyrics as needed
-    };
+            cart.forEach(item => {
+                const li = document.createElement("li");
+                li.innerHTML = `${item.name} - $${item.price.toFixed(2)}`;
+                cartList.appendChild(li);
+                total += item.price;
+            });
 
-    const audio = document.getElementById("bg-music");
-    const playlistEl = document.getElementById("playlist");
-    const currentSongTitleEl = document.getElementById("currentSongTitle");
-    const lyricsEl = document.getElementById("lyrics");
-    const loopStatusEl = document.getElementById("loopStatus");
+            totalPrice.textContent = total.toFixed(2);
+            cartCount.textContent = cart.length;
+        }
 
-    let currentSongIndex = 0;
-    let isLooping = false;
+        function openCart() {
+            const cartModal = new bootstrap.Modal(document.getElementById('cartModal'));
+            cartModal.show();
+        }
 
-    function loadSong(index) {
-      currentSongIndex = index;
-      audio.src = songs[index];
-      currentSongTitleEl.textContent = songs[index];
-      highlightActiveSong();
-      showLyrics(songs[index]);
-      audio.play();
-    }
+        function checkout() {
+            alert("Thank you for shopping with us!");
+            cart = [];
+            updateCartUI();
+            const cartModal = new bootstrap.Modal(document.getElementById('cartModal'));
+            cartModal.hide();
+        }
 
-    function highlightActiveSong() {
-      const items = playlistEl.querySelectorAll("li");
-      items.forEach((item, idx) => {
-        item.classList.toggle("active", idx === currentSongIndex);
-      });
-    }
+        function searchProducts() {
+            const query = document.getElementById("searchBox").value.toLowerCase();
+            const productCards = document.querySelectorAll("#products .card");
 
-    function showLyrics(song) {
-      lyricsEl.textContent = lyricsData[song] || "No lyrics available.";
-    }
+            productCards.forEach(card => {
+                const name = card.querySelector(".card-title").textContent.toLowerCase();
+                card.parentElement.style.display = name.includes(query) ? "block" : "none";
+            });
+        }
+    </script>
 
-    function togglePlayPause() {
-      if (audio.paused) {
-        audio.play();
-      } else {
-        audio.pause();
-      }
-    }
-
-    function skipSong() {
-      currentSongIndex = (currentSongIndex + 1) % songs.length;
-      loadSong(currentSongIndex);
-    }
-
-    function toggleLoop() {
-      isLooping = !isLooping;
-      loopStatusEl.textContent = isLooping ? "On" : "Off";
-    }
-
-    audio.addEventListener("ended", () => {
-      if (currentSongIndex < songs.length - 1) {
-        skipSong();
-      } else if (isLooping) {
-        loadSong(0);
-      } else {
-        audio.pause();
-      }
-    });
-
-    // Build playlist UI
-    songs.forEach((song, index) => {
-      const li = document.createElement("li");
-      li.textContent = song;
-      li.classList.add("list-group-item");
-      li.addEventListener("click", () => loadSong(index));
-      playlistEl.appendChild(li);
-    });
-
-    loadSong(currentSongIndex);
-
-    // Firebase Auth functions
-    async function signUp() {
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
-      try {
-        const userCredential = await auth.createUserWithEmailAndPassword(email, password);
-        alert("Sign up successful! Welcome, " + userCredential.user.email);
-      } catch (error) {
-        alert("Error: " + error.message);
-      }
-    }
-
-    async function login() {
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
-      try {
-        const userCredential = await auth.signInWithEmailAndPassword(email, password);
-        alert("Logged in as " + userCredential.user.email);
-      } catch (error) {
-        alert("Error: " + error.message);
-      }
-    }
-
-    async function logout() {
-      try {
-        await auth.signOut();
-        alert("Logged out successfully");
-      } catch (error) {
-        alert("Error: " + error.message);
-      }
-    }
-
-    // Submit feedback
-    // Submit feedback
-async function submitFeedback() {
-  const feedbackText = document.getElementById("feedback").value;
-  if (!feedbackText) {
-    alert("Please write something before submitting.");
-    return;
-  }
-  try {
-    await db.collection("feedback").add({
-      text: feedbackText,
-      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-    });
-    alert("Feedback submitted!");
-    document.getElementById("feedback").value = "";
-    loadFeedback(); // Refresh list
-  } catch (error) {
-    console.error("Error submitting feedback:", error);
-    alert("There was an error submitting your feedback. Please try again.");
-  }
-}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>AOS.init();</script>
+</body>
+</html>
